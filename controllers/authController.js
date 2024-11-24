@@ -83,6 +83,15 @@ exports.login = catchAsync(async (req, res, next) => {
   createTokenAndSend(user, 200, res);
 });
 
+exports.logout = (req, res) => {
+  console.log('logout');
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: 'success' });
+};
+
 exports.protect = catchAsync(async (req, res, next) => {
   // 1 ) Getting token and check if it's there
   let token;
@@ -128,37 +137,43 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 // for rendering pages
-exports.isLoggedIn = catchAsync(async (req, res, next) => {
+exports.isLoggedIn = async (req, res, next) => {
   // 1 ) Getting token and check if it's there
+  try {
+    if (req.cookies.jwt) {
+      const token = req.cookies.jwt;
 
-  if (req.cookies.jwt) {
-    const token = req.cookies.jwt;
+      if (!token) {
+        return next();
+      }
 
-    if (!token) {
+      // 2 ) Verification token
+      const decoded = await promisify(jwt.verify)(
+        token,
+        process.env.JWT_SECRET,
+      );
+      // is the same as  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {})
+      // but the  problem with this is that it will not work with async await so we use promisify
+
+      // 3 ) Check if user still exists
+      const currentUser = await User.findById(decoded.id);
+      if (!currentUser) {
+        return next();
+      }
+      // 4 ) Check if user changed password after the token was issued
+      if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next();
+      }
+      // pass the user to the template
+      res.locals.user = currentUser;
       return next();
     }
-
-    // 2 ) Verification token
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    // is the same as  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {})
-    // but the  problem with this is that it will not work with async await so we use promisify
-
-    // 3 ) Check if user still exists
-    const currentUser = await User.findById(decoded.id);
-    if (!currentUser) {
-      return next();
-    }
-    // 4 ) Check if user changed password after the token was issued
-    if (currentUser.changedPasswordAfter(decoded.iat)) {
-      return next();
-    }
-    // pass the user to the template
-    res.locals.user = currentUser;
+  } catch (err) {
     return next();
   }
 
   next();
-});
+};
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
