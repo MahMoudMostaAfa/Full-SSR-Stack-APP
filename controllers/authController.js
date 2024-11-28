@@ -85,10 +85,11 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.logout = (req, res) => {
   console.log('logout');
-  res.cookie('jwt', 'loggedout', {
-    expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true,
-  });
+  // res.cookie('jwt', 'loggedout', {
+  //   expires: new Date(Date.now() + 10 * 1000),
+  //   httpOnly: true,
+  // });
+  res.clearCookie('jwt');
   res.status(200).json({ status: 'success' });
 };
 
@@ -105,9 +106,10 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.cookies.jwt;
   }
   if (!token) {
-    return next(
-      new AppError('You are not logged in! Please log in to get access.', 401),
-    );
+    return res.redirect('/');
+    // return next(
+    //   new AppError('You are not logged in! Please log in to get access.', 401),
+    // );
   }
 
   // 2 ) Verification token
@@ -133,6 +135,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
   // GRANT ACCESS TO PROTECTED ROUTE
   req.user = currentUser;
+  res.locals.user = currentUser;
   next();
 });
 
