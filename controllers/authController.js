@@ -258,11 +258,12 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // 3 ) Update changedPasswordAt property for the user
 
   // 4 ) Log the user in, send JWT
-  const token = signToken(user._id);
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  // const token = signToken(user._id);
+  // res.status(200).json({
+  //   status: 'success',
+  //   token,
+  // });
+  createTokenAndSend(user, 200, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -281,9 +282,10 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // find by id and update not working here because i need middle ware in model and validation it working only in save
   await user.save();
   // 4) login user in ,send JWT
-  const token = signToken(user._id);
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  // const token = signToken(user._id);
+  // res.status(200).json({
+  //   status: 'success',
+  //   token,
+  // });
+  createTokenAndSend(user, 200, res);
 });

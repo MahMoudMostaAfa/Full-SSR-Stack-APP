@@ -62,9 +62,31 @@
     map.touchZoom.disable();
   };
 
+  // public/js/updateSettings.js
+  async function updateSettings(data, type) {
+    const url = type === "password" ? "http://localhost:3000/api/v1/users/updatePassword" : "http://localhost:3000/api/v1/users/updateMe";
+    try {
+      const res = await axios({
+        method: "PATCH",
+        url,
+        data
+      });
+      if (res.data.status === "success") {
+        showAlert(
+          "success",
+          `${type == "password" ? "password" : "data"} updated successfully!`
+        );
+      }
+    } catch (err) {
+      showAlert("error", err.response.data.message);
+    }
+  }
+
   // public/js/index.js
   var mapBox = document.getElementById("map");
-  var loginForm = document.querySelector(".form");
+  var loginForm = document.querySelector(".form--login");
+  var updateUserDataForm = document.querySelector(".form-user-data");
+  var updateUserPasswordForm = document.querySelector(".form-user-settings");
   var logoutBtn = document.querySelector(".nav__el--logout");
   if (mapBox) {
     const locations = JSON.parse(
@@ -82,5 +104,30 @@
     });
   }
   if (logoutBtn) logoutBtn.addEventListener("click", logout);
+  if (updateUserDataForm) {
+    updateUserDataForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      updateSettings({ name, email }, "data");
+    });
+  }
+  if (updateUserPasswordForm) {
+    updateUserPasswordForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const currentPassword = document.getElementById("password-current").value;
+      const newPassword = document.getElementById("password").value;
+      const confirmNewPassword = document.getElementById("password-confirm").value;
+      document.querySelector(".form-user-settings .btn").innerHTML = "loading....";
+      await updateSettings(
+        { currentPassword, newPassword, confirmNewPassword },
+        "password"
+      );
+      document.getElementById("password-current").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("password-confirm").value = "";
+      document.querySelector(".form-user-settings .btn").innerHTML = "save password";
+    });
+  }
 })();
 //# sourceMappingURL=bundle.js.map
