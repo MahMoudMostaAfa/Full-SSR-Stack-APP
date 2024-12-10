@@ -10,7 +10,7 @@ block content
     nav.user-view__menu
       ul.side-nav
         +navlink('#', 'Settings', 'settings',true)
-        +navlink('#', 'My Bookings', 'briefcase',false)
+        +navlink('/my-tours', 'My Bookings', 'briefcase',false)
         +navlink('#', 'My Reviews', 'star',false)
         +navlink('#', 'Billing', 'credit-card',false)
       - if(user.role === 'admin')
