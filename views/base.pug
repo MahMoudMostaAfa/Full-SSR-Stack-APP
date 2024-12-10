@@ -8,12 +8,15 @@ html
       link(rel='shortcut icon' type='image/png' href='/img/logo.png')
       link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
       script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js' defer)
+      script(src="https://js.stripe.com/v3/" defer)  
     title Natours | #{title}
   body 
     // HEADER
     include _header.pug
     // MAIN
     main.main 
+      #loading-spinner.hidden
+        .spinner
       block content
         h1 helllo!! 
 

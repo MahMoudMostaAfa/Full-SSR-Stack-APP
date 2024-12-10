@@ -1328,3 +1328,42 @@ p.footer_copyright {
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
 }
+
+/* Center the spinner */
+#loading-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Spinner element */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top: 5px solid #27dc48;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Hide spinner */
+.hidden {
+  display: none !important;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

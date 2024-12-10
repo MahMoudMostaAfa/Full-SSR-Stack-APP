@@ -4,6 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const User = require('../models/userModel');
 const factory = require('./handlerFactory');
 const AppError = require('../utils/appError');
+const deletePhotoFromFolder = require('../utils/deletePhoto');
 
 // multer configuration
 // const multerStorage = multer.diskStorage({
@@ -31,18 +32,18 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 });
 exports.uploadUserPhoto = upload.single('photo');
-exports.resizeUserPhoto = (req, res, next) => {
+exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
   // 34an odam hst5dmha feh updateMe
   req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
-  sharp(req.file.buffer)
+  await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
     .toFile(`public/img/users/${req.file.filename}`);
 
   next();
-};
+});
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
 
@@ -70,7 +71,10 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   }
   // 2 ) Filtered out unwanted fields names that are not allowed to be updated
   const newBody = filterObj(req.body, 'name', 'email');
-  if (req.file) newBody.photo = req.file.filename;
+  if (req.file) {
+    newBody.photo = req.file.filename;
+    await deletePhotoFromFolder(req.user.photo);
+  }
 
   const updatedUser = await User.findByIdAndUpdate(req.user.id, newBody, {
     new: true,
