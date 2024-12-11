@@ -45,3 +45,4 @@ process.on('unhandledRejection', (err) => {
 // 400 >> bad request
 // 401 >> unauthorized
 // 403 >> forbidden
+// "build": "SET NODE_ENV=production&&nodemon server.js ",
