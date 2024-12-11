@@ -6,10 +6,10 @@ import { bookTour } from './stripe';
 
 const spinner = document.getElementById('loading-spinner');
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM fully loaded and parsed');
+  // console.log('DOM fully loaded and parsed');
   const showSpinner = () => spinner.classList.remove('hidden');
   showSpinner();
-  console.log('spinner');
+  // console.log('spinner');
 });
 const hideSpinner = () => spinner.classList.add('hidden');
 window.addEventListener('load', () => {
@@ -30,7 +30,7 @@ if (mapBox) {
   const locations = JSON.parse(
     document.getElementById('map').dataset.locations,
   );
-  console.log('dislaping');
+  // console.log('dislaping');
   displayMap(locations);
 }
 
@@ -57,8 +57,8 @@ if (updateUserDataForm) {
     form.append('photo', document.getElementById('photo').files[0]);
     // console.log(name, email);
     // updateSettings({ name, email });
-    console.log(form);
-    console.log(form.get('photo'));
+    // console.log(form);
+    // console.log(form.get('photo'));
     updateSettings(form, 'data');
   });
 }
