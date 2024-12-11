@@ -36,6 +36,7 @@ app.use(
         'https://unpkg.com',
         'https://cdnjs.cloudflare.com',
         'https://js.stripe.com',
+        'https://vercel.live',
       ], // Allow scripts from unpkg.com
       styleSrc: [
         "'self'",
