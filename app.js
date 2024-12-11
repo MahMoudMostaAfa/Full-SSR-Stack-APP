@@ -4,7 +4,7 @@ const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
-
+const compression = require('compression');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
@@ -110,6 +110,8 @@ app.use((req, res, next) => {
   // console.log(req.cookies);
   next();
 });
+
+app.use(compression());
 
 // Routes for views
 app.use('/', viewRouter);

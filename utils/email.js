@@ -12,7 +12,7 @@ module.exports = class Email {
   }
   newTransport() {
     if (process.env.NODE_ENV === 'production') {
-      console.log('production');
+      // console.log('production');
       return nodemailer.createTransport({
         host: process.env.BREVO_HOST,
         port: process.env.BREVO_PORT,

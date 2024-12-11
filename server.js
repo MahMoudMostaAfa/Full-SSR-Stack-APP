@@ -24,9 +24,9 @@ async function dbConnect() {
 }
 
 dbConnect().catch((err) => console.log(err));
-
-const server = app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
+const port = process.env.PORT || 3000;
+const server = app.listen(port, () => {
+  console.log(`Server is running on ${port} `);
 });
 
 // handle unhandled rejection of asynchronous code
