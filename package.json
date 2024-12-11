@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon server.js",
-    "start:prod": "SET NODE_ENV=production&&nodemon server.js ",
-    "build": "esbuild ./public/js/index.js --bundle --outfile=./public/js/bundle.js --sourcemap --minify",
-    "watch": "esbuild ./public/js/index.js --bundle --outfile=./public/js/bundle.js --watch --sourcemap"
+    "build": "SET NODE_ENV=production&&nodemon server.js ",
+    "es-build": "esbuild ./public/js/index.js --bundle --outfile=./public/js/bundle.js --sourcemap --minify",
+    "es-watch": "esbuild ./public/js/index.js --bundle --outfile=./public/js/bundle.js --watch --sourcemap"
   },
   "author": "",
   "license": "ISC",
