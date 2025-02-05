@@ -37,15 +37,17 @@ app.use(
         'https://cdnjs.cloudflare.com',
         'https://js.stripe.com',
         'https://vercel.live',
+        'unsafe-inline',
       ], // Allow scripts from unpkg.com
       styleSrc: [
         "'self'",
         'https://unpkg.com',
         'https://fonts.googleapis.com',
         'https://tile.openstreetmap.org',
+        'unsafe-inline',
         // Correct source for Google Fonts stylesheets
       ],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com'], // Allow font files from fonts.gstatic.com
+      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'unsafe-inline'], // Allow font files from fonts.gstatic.com
       imgSrc: ["'self'", 'blob:', 'data:', 'https:'],
       frameSrc: ["'self'", 'https://js.stripe.com'],
     },
