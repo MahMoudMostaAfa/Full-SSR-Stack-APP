@@ -30,24 +30,29 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'"], // Default sources
+      defaultSrc: ["'self'", "'unsafe-inline'"], // Default sources
+      connectSrc: [
+        "'self'",
+        'http://localhost:3000', // Allow connections to your backend
+        'https://full-ssr-stack-app-5nyl.vercel.app/', // Add your production API URL
+      ],
       scriptSrc: [
         "'self'",
+        "'unsafe-inline'",
         'https://unpkg.com',
         'https://cdnjs.cloudflare.com',
         'https://js.stripe.com',
         'https://vercel.live',
-        'unsafe-inline',
       ], // Allow scripts from unpkg.com
       styleSrc: [
         "'self'",
+        "'unsafe-inline'",
         'https://unpkg.com',
         'https://fonts.googleapis.com',
         'https://tile.openstreetmap.org',
-        'unsafe-inline',
         // Correct source for Google Fonts stylesheets
       ],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'unsafe-inline'], // Allow font files from fonts.gstatic.com
+      fontSrc: ["'self'", " 'unsafe-inline'", 'https://fonts.gstatic.com'], // Allow font files from fonts.gstatic.com
       imgSrc: ["'self'", 'blob:', 'data:', 'https:'],
       frameSrc: ["'self'", 'https://js.stripe.com'],
     },
