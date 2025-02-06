@@ -11,6 +11,7 @@ const xss = require('xss-clean');
 const cookieParser = require('cookie-parser');
 const hpp = require('hpp');
 const cors = require('cors');
+
 const AppError = require('./utils/appError');
 const GlobalErrorHandler = require('./controllers/errorController');
 
@@ -40,6 +41,7 @@ app.use(
       defaultSrc: ["'self'", "'unsafe-inline'"], // Default sources
       connectSrc: [
         "'self'",
+        "'unsafe-inline'",
         'http://localhost:3000', // Allow connections to your backend
         'https://full-ssr-stack-app-5nyl.vercel.app/', // Add your production API URL
       ],
