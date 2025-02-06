@@ -40,7 +40,7 @@ app.use(
     directives: {
       defaultSrc: ["'self'", "'unsafe-inline'"], // Default sources
       connectSrc: [
-        "'self'",
+        // "'self'",
         "'unsafe-inline'",
         'http://localhost:3000', // Allow connections to your backend
         'https://full-ssr-stack-app-5nyl.vercel.app/', // Add your production API URL
