@@ -10,6 +10,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const cookieParser = require('cookie-parser');
 const hpp = require('hpp');
+const cors = require('cors');
 const AppError = require('./utils/appError');
 const GlobalErrorHandler = require('./controllers/errorController');
 
@@ -28,6 +29,11 @@ app.set('views', path.join(__dirname, 'views'));
 // GLoabl middleware
 
 // set security http headers
+// for simple request such as get and post
+app.use(cors());
+// for preflight request such as put and delete
+app.options('*', cors());
+
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
