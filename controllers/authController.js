@@ -5,6 +5,7 @@ const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Email = require('../utils/email');
+const { request } = require('http');
 
 // eslint-disable-next-line arrow-body-style
 const signToken = (id) => {
@@ -13,7 +14,7 @@ const signToken = (id) => {
   });
 };
 
-const createTokenAndSend = (user, statusCode, res) => {
+const createTokenAndSend = (user, statusCode, res, req) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(
@@ -21,8 +22,10 @@ const createTokenAndSend = (user, statusCode, res) => {
     ),
     // we can not access or modify the cookie in any way
     httpOnly: true,
+    // this means that we can get tokens only in https
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+
   res.cookie('jwt', token, cookieOptions);
   // Remove password from output
   user.password = undefined;
@@ -46,7 +49,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
   const url = `${req.protocol}://localhost:3000/me`;
   await new Email(newUser, url).sendWelcome();
-  createTokenAndSend(newUser, 201, res);
+  createTokenAndSend(newUser, 201, res, req);
   // const token = signToken(newUser._id);
 
   // res.status(201).json({
@@ -81,7 +84,7 @@ exports.login = catchAsync(async (req, res, next) => {
   //   status: 'success',
   //   token,
   // });
-  createTokenAndSend(user, 200, res);
+  createTokenAndSend(user, 200, res, req);
 });
 
 exports.logout = (req, res) => {
@@ -261,7 +264,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   //   status: 'success',
   //   token,
   // });
-  createTokenAndSend(user, 200, res);
+  createTokenAndSend(user, 200, res, req);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -285,5 +288,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   //   status: 'success',
   //   token,
   // });
-  createTokenAndSend(user, 200, res);
+  createTokenAndSend(user, 200, res, req);
 });
