@@ -40,14 +40,15 @@ app.use(
     directives: {
       defaultSrc: ["'self'", "'unsafe-inline'"], // Default sources
       connectSrc: [
-        // "'self'",
-        "'unsafe-inline'",
-        'http://localhost:3000', // Allow connections to your backend
-        'https://full-ssr-stack-app-5nyl.vercel.app/', // Add your production API URL
+        "'self'",
+        '*',
+        // "'unsafe-inline'",
+        // 'http://localhost:3000', // Allow connections to your backend
+        // 'https://full-ssr-stack-app-5nyl.vercel.app/', // Add your production API URL
       ],
       scriptSrc: [
         "'self'",
-        "'unsafe-inline'",
+        // "'unsafe-inline'",
         'https://unpkg.com',
         'https://cdnjs.cloudflare.com',
         'https://js.stripe.com',
@@ -55,13 +56,13 @@ app.use(
       ], // Allow scripts from unpkg.com
       styleSrc: [
         "'self'",
-        "'unsafe-inline'",
+        // "'unsafe-inline'",
         'https://unpkg.com',
         'https://fonts.googleapis.com',
         'https://tile.openstreetmap.org',
         // Correct source for Google Fonts stylesheets
       ],
-      fontSrc: ["'self'", " 'unsafe-inline'", 'https://fonts.gstatic.com'], // Allow font files from fonts.gstatic.com
+      fontSrc: ["'self'", 'https://fonts.gstatic.com'], // Allow font files from fonts.gstatic.com
       imgSrc: ["'self'", 'blob:', 'data:', 'https:'],
       frameSrc: ["'self'", 'https://js.stripe.com'],
     },
