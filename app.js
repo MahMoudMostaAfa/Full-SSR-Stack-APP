@@ -31,7 +31,13 @@ app.set('views', path.join(__dirname, 'views'));
 
 // set security http headers
 // for simple request such as get and post
-app.use(cors());
+app.use(
+  cors({
+    // allow all origins
+    origin: '*',
+    credentials: true,
+  }),
+);
 // for preflight request such as put and delete
 app.options('*', cors());
 
